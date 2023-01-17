@@ -1,14 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
+import errorIcon from './assets/icon-error.svg';
 
+
+type Inputs = {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string
+};
 
 const Card: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<Inputs>();
 
   const onSubmit = () => {
     console.log('submitted');
@@ -31,6 +39,10 @@ const Card: React.FC = () => {
         <Content onSubmit={handleSubmit(onSubmit)}>
           <Input
             placeholder="First Name"
+            maxLength={28}
+            style={{
+              border: errors.firstname ? '1px solid #FF7979' : '',
+            }}
             {...register('firstname', { required: true })}
           ></Input>
           {errors.firstname && (
@@ -38,6 +50,10 @@ const Card: React.FC = () => {
           )}
           <Input
             placeholder="Last Name"
+            maxLength={28}
+            style={{
+              border: errors.lastname ? '1px solid #FF7979' : '',
+            }}
             {...register('lastname', { required: true })}
           ></Input>
           {errors.lastname && (
@@ -47,6 +63,10 @@ const Card: React.FC = () => {
           <Input
             placeholder="Email Address"
             type="email"
+            maxLength={38}
+            style={{
+              border: errors.email ? '1px solid #FF7979' : '',
+            }}
             {...register('email', {
               required: 'Email cannot be empty',
               pattern: {
@@ -62,6 +82,10 @@ const Card: React.FC = () => {
           <Input
             placeholder="Password"
             type="password"
+            maxLength={28}
+            style={{
+              border: errors.password ? '1px solid #FF7979' : '',
+            }}
             {...register('password', {
               required: 'Password cannot be empty',
               minLength: {
@@ -169,7 +193,7 @@ const Label = styled.div`
     height: 60px;
   }
   @media (min-width: 1024px) {
-    width:620px;
+    width: 620px;
     height: 68px;
   }
 `;
@@ -253,4 +277,10 @@ const ErrorMessage = styled.p`
   @media (min-width: 678px) {
     font-size: 12px;
   }
+`;
+
+const ErrorIcon = styled.div`
+  background-image: url(${errorIcon});
+  width: 24px;
+  height: 24px;
 `;
